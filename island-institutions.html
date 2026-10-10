@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-GB" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mauritius Institutions — Tutee Connect</title>
+  <meta name="description" content="All 41 HEC-registered institutions in Mauritius an international student can enrol in. Filter by subject, region and who awards the degree.">
+  <meta name="theme-color" content="#06324a">
+  <link rel="icon" href="./assets/img/logo/icon.png">
+  <link rel="stylesheet" href="./assets/css/quicksand.css">
+  <link rel="stylesheet" href="./assets/css/island.css">
+  <script src="./assets/js/universities-data.js"></script>
+  <script src="./assets/js/island.js" defer></script>
+  <script src="./assets/js/island-directory.js" defer></script>
+</head>
+<body class="dir-page">
+<header class="nav" data-nav>
+  <div class="wrap nav-inner">
+    <a class="nav-logo" href="island.html" aria-label="Tutee Connect home"><img src="./assets/img/logo/logo.png" alt="Tutee Connect — Study | Immigration" width="220" height="86"></a>
+    <ul class="nav-links" data-nav-links><li><a href="island.html#why">Why Mauritius</a></li><li><a href="island.html#journey">Your route</a></li><li><a href="island-institutions.html">Institutions</a></li><li><a href="island.html#reviews">Stories</a></li><li><a href="island.html#faq">FAQ</a></li></ul>
+    <a class="btn btn-coral nav-cta" href="island.html#contact" data-ripple>Free counselling</a>
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" data-nav-toggle>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7c3-2 6 2 9 0s6-2 9 0M3 12c3-2 6 2 9 0s6-2 9 0M3 17c3-2 6 2 9 0s6-2 9 0"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<section class="dir-hero" data-label="Top">
+  <div class="dir-hero-media" aria-hidden="true"></div>
+  <div class="dir-hero-shade" aria-hidden="true"></div>
+  <div class="wrap dir-hero-inner">
+    <a class="back-link" href="island.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Study in Mauritius</a>
+    <span class="eyebrow reveal"><span class="dot"></span> The HEC register, captured 5 September 2026</span>
+    <h1 class="reveal d1"><span data-count="41">41</span> places to study on the island.</h1>
+    <p class="reveal d2">Every institution here is registered with the Higher Education Commission and open to international students. Registration is what makes a student visa possible.</p>
+    <div class="search reveal d3">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <label for="dir-search" class="sr-only">Search institutions</label>
+      <input id="dir-search" type="search" placeholder="Search by name, abbreviation or town, e.g. UoM, Ebène, Curtin" autocomplete="off" data-search>
+    </div>
+  </div>
+</section>
+
+<section class="dir-body" data-stage="lagoon" data-label="Directory">
+  <div class="toolbar" data-toolbar>
+    <div class="wrap toolbar-inner">
+      <div class="seg-mini" data-filter="awards" role="group" aria-label="Who awards the degree">
+        <button type="button" class="on" data-value="">All awards</button>
+        <button type="button" data-value="own">Own</button>
+        <button type="button" data-value="partner">Partner</button>
+      </div>
+      <div class="seg-mini" data-filter="sector" role="group" aria-label="Sector">
+        <button type="button" class="on" data-value="">All sectors</button>
+        <button type="button" data-value="public">Public</button>
+        <button type="button" data-value="private">Private</button>
+      </div>
+      <label class="sr-only" for="dir-subject">Subject</label>
+      <select id="dir-subject" data-subject><option value="">Any subject</option></select>
+      <label class="sr-only" for="dir-region">Region</label>
+      <select id="dir-region" data-region><option value="">Anywhere</option></select>
+      <label class="sr-only" for="dir-sort">Sort</label>
+      <select id="dir-sort" data-sort>
+        <option value="register">Register order</option>
+        <option value="az">Name A–Z</option>
+        <option value="subjects">Most subjects</option>
+      </select>
+      <p class="count" aria-live="polite"><b data-shown>41</b> of 41</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="legend">
+      <span><i class="dot-own"></i> Awards its own degrees</span>
+      <span><i class="dot-partner"></i> Teaches toward a partner's degree</span>
+      <span class="legend-tip">Tap a row to open it. Tick up to 3 to compare.</span>
+    </div>
+    <ul class="rows" data-rows></ul>
+    <div class="empty hidden" data-empty>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 44 C16 40 24 48 32 44 S48 40 56 44" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="24" r="10" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+      <h3>Nothing on the horizon</h3>
+      <p>No institution matches all of those filters. Try removing one, or ask a counsellor for a shortlist.</p>
+      <button type="button" class="btn btn-ocean" data-reset>Clear all filters</button>
+    </div>
+    <p class="dir-source">Source: Higher Education Commission registers of publicly funded institutions, private HEIs and accredited programmes. Two public bodies with no route in for international applicants, and two private HEIs with no accredited programme, are left out.</p>
+  </div>
+
+  <div class="tray" data-tray aria-live="polite">
+    <div class="tray-inner">
+      <div class="tray-picks" data-tray-picks></div>
+      <div class="tray-actions">
+        <button type="button" class="btn btn-glass-dark" data-tray-clear>Clear</button>
+        <button type="button" class="btn btn-ocean" data-compare-open>Compare</button>
+        <button type="button" class="btn btn-coral" data-tray-enquire>Enquire about these</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet" data-sheet role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+    <div class="sheet-back" data-sheet-close></div>
+    <div class="sheet-card">
+      <div class="sheet-head"><h2 id="sheet-title">Side by side</h2><button type="button" class="round-btn" data-sheet-close aria-label="Close comparison"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="sheet-scroll"><table class="compare" data-compare></table></div>
+    </div>
+  </div>
+</section>
+
+<section class="dir-cta" data-stage="horizon" data-label="Get a shortlist">
+  <div class="wrap dir-cta-inner reveal">
+    <h2>Not sure which one fits?</h2>
+    <p>Tell us your marks, budget and the degree you want. We'll come back with a shortlist from this register.</p>
+    <a class="btn btn-coral" href="island.html#contact" data-ripple>Get a free shortlist</a>
+  </div>
+</section>
+<span hidden data-contact-href="island.html#contact"></span>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand"><img src="./assets/img/logo/logo.png" alt="Tutee Connect" width="160" height="62"></div>
+      <nav aria-label="Footer">
+        <a href="island.html#why">Why Mauritius</a><a href="island.html#journey">Your route</a><a href="island.html#faq">FAQ</a><a href="island-institutions.html">Institutions</a><a href="island.html#contact">Contact</a>
+      </nav>
+    </div>
+    <small>© <span data-year>2026</span> Tutee Connect. All Rights Reserved. Institution data from the Higher Education Commission's registers. Video footage via Pexels. Bricolage Grotesque font under the SIL Open Font License.</small>
+  </div>
+</footer>
+</body>
+</html>
