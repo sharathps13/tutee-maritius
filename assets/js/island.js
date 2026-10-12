@@ -104,127 +104,76 @@
 
   /* ---------------------------------------------------------- bottles: the message comes out of the bottle */
   function initBottles() {
-    var root = $('[data-bottles]'), stage = $('[data-msg-stage]');
-    if (!root || !stage) return;
-    var btns = $$('.bottle-btn', root), note = $('[data-note]', stage), hint = $('[data-msg-hint]', stage);
-    var title = $('[data-note-title]', note), text = $('[data-note-text]', note), num = $('[data-note-num]', note);
-    var open = -1, busy = false;
-    function wait(ms) { return new Promise(function (r) { setTimeout(r, REDUCED ? 0 : ms); }); }
-    function setU(from, to, ms) {
-      return new Promise(function (res) {
-        if (REDUCED) { note.style.setProperty('--u', to); res(); return; }
-        var t0 = performance.now();
-        (function step(now) {
-          var t = Math.min(1, (now - t0) / ms), k = to > from ? 1 - Math.pow(1 - t, 3) : t * t;
-          note.style.setProperty('--u', (from + (to - from) * k).toFixed(4));
-          if (t < 1) requestAnimationFrame(step); else res();
-        })(t0);
-      });
+    var field = $('[data-buoy-field]');
+    if (!field) return;
+    var root = field;
+    // the beach scrolls with the section: palms and shells stand on the sand in front of the water
+    var sec = root.closest('section'), top = sec && $('.beach-top', sec);
+    if (top && !$('.beach-decor', top)) {
+      var deco = document.createElement('div');
+      deco.className = 'beach-decor'; deco.setAttribute('aria-hidden', 'true');
+      deco.innerHTML = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="palm-leaf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fcf8f"/><stop offset=".55" stop-color="#2f9e6f"/><stop offset="1" stop-color="#1f6f50"/></linearGradient></defs></svg><div class="palms"><svg class="palm p-left" viewBox="0 0 240 420" aria-hidden="true"><path class="trunk" d="M132 416 C126 330 112 250 118 160 C121 118 122 92 120 70" fill="none" stroke="#0b5c7a" stroke-width="22" stroke-linecap="round"/><path d="M132 416 C126 330 112 250 118 160 C121 118 122 92 120 70" fill="none" stroke="#b9854d" stroke-width="17" stroke-linecap="round"/><path d="M132 416 C126 330 112 250 118 160 C121 118 122 92 120 70" fill="none" stroke="#8d5f33" stroke-width="17" stroke-dasharray="3 19" /><g class="fronds"><path d="M120 64 C150 40 196 36 232 52 C200 52 172 60 150 76 C176 70 204 76 224 92 C190 86 160 86 132 80 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C92 36 46 32 10 50 C42 50 70 58 92 74 C64 70 36 78 18 96 C52 86 84 84 110 80 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C128 30 160 8 196 6 C170 18 150 36 140 60 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C108 28 76 8 40 8 C66 20 88 38 100 62 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C150 74 172 100 178 132 C162 108 144 94 124 86 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C92 76 72 104 68 136 C84 110 102 96 120 86 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><circle cx="112" cy="78" r="8" fill="#7a5230" stroke="#0b5c7a" stroke-width="2"/><circle cx="127" cy="80" r="7.5" fill="#8d5f33" stroke="#0b5c7a" stroke-width="2"/><circle cx="119" cy="89" r="7" fill="#6e4828" stroke="#0b5c7a" stroke-width="2"/></g></svg><svg class="palm p-left2" viewBox="0 0 240 420" aria-hidden="true"><path class="trunk" d="M132 416 C126 330 112 250 118 160 C121 118 122 92 120 70" fill="none" stroke="#0b5c7a" stroke-width="22" stroke-linecap="round"/><path d="M132 416 C126 330 112 250 118 160 C121 118 122 92 120 70" fill="none" stroke="#b9854d" stroke-width="17" stroke-linecap="round"/><path d="M132 416 C126 330 112 250 118 160 C121 118 122 92 120 70" fill="none" stroke="#8d5f33" stroke-width="17" stroke-dasharray="3 19" /><g class="fronds"><path d="M120 64 C150 40 196 36 232 52 C200 52 172 60 150 76 C176 70 204 76 224 92 C190 86 160 86 132 80 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C92 36 46 32 10 50 C42 50 70 58 92 74 C64 70 36 78 18 96 C52 86 84 84 110 80 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C128 30 160 8 196 6 C170 18 150 36 140 60 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C108 28 76 8 40 8 C66 20 88 38 100 62 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C150 74 172 100 178 132 C162 108 144 94 124 86 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C92 76 72 104 68 136 C84 110 102 96 120 86 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><circle cx="112" cy="78" r="8" fill="#7a5230" stroke="#0b5c7a" stroke-width="2"/><circle cx="127" cy="80" r="7.5" fill="#8d5f33" stroke="#0b5c7a" stroke-width="2"/><circle cx="119" cy="89" r="7" fill="#6e4828" stroke="#0b5c7a" stroke-width="2"/></g></svg><svg class="palm p-right" viewBox="0 0 240 420" aria-hidden="true"><path class="trunk" d="M132 416 C126 330 112 250 118 160 C121 118 122 92 120 70" fill="none" stroke="#0b5c7a" stroke-width="22" stroke-linecap="round"/><path d="M132 416 C126 330 112 250 118 160 C121 118 122 92 120 70" fill="none" stroke="#b9854d" stroke-width="17" stroke-linecap="round"/><path d="M132 416 C126 330 112 250 118 160 C121 118 122 92 120 70" fill="none" stroke="#8d5f33" stroke-width="17" stroke-dasharray="3 19" /><g class="fronds"><path d="M120 64 C150 40 196 36 232 52 C200 52 172 60 150 76 C176 70 204 76 224 92 C190 86 160 86 132 80 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C92 36 46 32 10 50 C42 50 70 58 92 74 C64 70 36 78 18 96 C52 86 84 84 110 80 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C128 30 160 8 196 6 C170 18 150 36 140 60 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C108 28 76 8 40 8 C66 20 88 38 100 62 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C150 74 172 100 178 132 C162 108 144 94 124 86 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><path d="M120 64 C92 76 72 104 68 136 C84 110 102 96 120 86 Z" fill="url(#palm-leaf)" stroke="#0b5c7a" stroke-width="2" stroke-linejoin="round"/><circle cx="112" cy="78" r="8" fill="#7a5230" stroke="#0b5c7a" stroke-width="2"/><circle cx="127" cy="80" r="7.5" fill="#8d5f33" stroke="#0b5c7a" stroke-width="2"/><circle cx="119" cy="89" r="7" fill="#6e4828" stroke="#0b5c7a" stroke-width="2"/></g></svg></div><div class="shells"><svg class="sh s1" viewBox="0 0 40 40"><path d="M20 4 L24 15 L36 15 L26 22 L30 34 L20 27 L10 34 L14 22 L4 15 L16 15 Z" fill="#f2a27a" stroke="#d9805a" stroke-width="1.5" stroke-linejoin="round"/><circle cx="20" cy="19" r="1.4" fill="#d9805a"/></svg><svg class="sh s2" viewBox="0 0 40 36"><path d="M20 32 C8 30 3 20 6 12 C10 4 30 4 34 12 C37 20 32 30 20 32 Z" fill="#fbe3c4" stroke="#d9b48a" stroke-width="1.5"/><path d="M20 31 L20 7 M20 31 L12 9 M20 31 L28 9 M20 31 L7 15 M20 31 L33 15" stroke="#d9b48a" stroke-width="1.3" fill="none" stroke-linecap="round"/><rect x="16" y="30" width="8" height="4" rx="2" fill="#d9b48a"/></svg><svg class="sh s3" viewBox="0 0 44 20"><ellipse cx="12" cy="12" rx="9" ry="6" fill="#e6cfa8"/><ellipse cx="29" cy="10" rx="7" ry="5" fill="#d8bd92"/><ellipse cx="38" cy="14" rx="4.5" ry="3.5" fill="#ecd8b6"/></svg><svg class="sh s4" viewBox="0 0 30 40"><path d="M15 3 C24 8 27 22 22 32 C19 37 11 37 8 32 C3 22 6 8 15 3 Z" fill="#fff1dc" stroke="#d9b48a" stroke-width="1.5"/><path d="M15 6 C18 14 18 26 15 34 M15 6 C11 15 10 25 12 33" stroke="#e5c39a" stroke-width="1.2" fill="none"/></svg><svg class="sh s5" viewBox="0 0 40 40"><path d="M20 4 L24 15 L36 15 L26 22 L30 34 L20 27 L10 34 L14 22 L4 15 L16 15 Z" fill="#f7c27a" stroke="#dca05a" stroke-width="1.5" stroke-linejoin="round"/></svg></div>';
+      top.insertBefore(deco, top.firstChild);
     }
-    function reset(b) { b.classList.remove('open', 'uncorked', 'emptied'); b.setAttribute('aria-pressed', 'false'); }
 
-    async function pull(i) {
-      if (busy || i === open) return;
-      busy = true;
-      var b = btns[i];
-      if (open > -1) { await setU(1, 0, 320); note.hidden = true; reset(btns[open]); }
-      open = i;
-      b.setAttribute('aria-pressed', 'true');
-      b.classList.add('open');
-      await wait(380);
-      b.classList.add('uncorked');
-      await wait(260);
+    var buoys = $$('.buoy', field), flag = $('[data-flag]', field), hint = $('[data-msg-hint]', field), live = $('[data-flag-live]');
+    var fNum = $('[data-flag-num]', flag), fTitle = $('[data-flag-title]', flag), fText = $('[data-flag-text]', flag);
+    var open = -1, overFlag = false, openT = 0, closeT = 0, hoverI = -1;
+    var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-      // what the note will look like, so the scroll can fly straight to it
-      title.textContent = b.getAttribute('data-title');
-      text.textContent = b.getAttribute('data-text');
-      num.textContent = 'Message ' + (i + 1) + ' of ' + btns.length;
-      note.style.setProperty('--u', 0);
-      note.hidden = false;
-      stage.style.minHeight = note.offsetHeight + 'px';
+    // hang the flag from the top of the buoy's pole, on whichever side has room
+    function place(i) {
+      var fr = field.getBoundingClientRect(), pole = $('svg', buoys[i]).getBoundingClientRect();
+      var px = pole.left + pole.width / 2 - fr.left, py = pole.top - fr.top + pole.height * .06;
+      flag.classList.remove('to-left', 'centre');
+      flag.style.left = '0px'; flag.style.top = '0px';
+      var w = flag.offsetWidth, h = flag.offsetHeight;
+      if (px + 4 + w <= fr.width) { flag.style.left = (px + 4) + 'px'; }
+      else if (px - 4 - w >= 0) { flag.classList.add('to-left'); flag.style.left = (px - 4 - w) + 'px'; }
+      else { flag.classList.add('centre'); flag.style.left = Math.max(0, (fr.width - w) / 2) + 'px'; py = Math.max(0, pole.top - fr.top - h - 6); }
+      flag.style.top = Math.max(0, py) + 'px';
+    }
+    function raise(i) {
+      clearTimeout(closeT);
+      if (i === open) return;
+      var b = buoys[i];
+      buoys.forEach(function (x, k) { x.classList.toggle('up', k === i); x.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
+      field.classList.add('has-up');
+      flag.classList.remove('on');
+      fNum.textContent = 'Signal ' + (i + 1) + ' of ' + buoys.length;
+      fTitle.textContent = b.getAttribute('data-title');
+      fText.textContent = b.getAttribute('data-text');
+      void flag.offsetWidth;
+      place(i);
+      flag.classList.add('on'); flag.setAttribute('aria-hidden', 'false');
       if (hint) hint.style.opacity = '0';
-      var nr = note.getBoundingClientRect(), sv = b.querySelector('svg').getBoundingClientRect();
-      var x0 = sv.left + sv.width / 2, y0 = sv.top + sv.height * .16;
-      var x1 = nr.left + nr.width / 2, y1 = nr.top + nr.height / 2;
-      var sy = Math.max(1, nr.height / 54);
-
-      b.classList.add('emptied');
-      if (!REDUCED) {
-        var fly = document.createElement('div');
-        fly.className = 'fly-scroll';
-        document.body.appendChild(fly);
-        var anim = fly.animate([
-          { transform: 'translate(' + x0 + 'px,' + (y0 + 26) + 'px) scale(.5)', opacity: 0 },
-          { transform: 'translate(' + x0 + 'px,' + (y0 - 34) + 'px) scale(1) rotate(-8deg)', opacity: 1, offset: .28 },
-          { transform: 'translate(' + ((x0 + x1) / 2) + 'px,' + (Math.min(y0, y1) - 60) + 'px) scale(1.2) rotate(8deg)', offset: .62 },
-          { transform: 'translate(' + x1 + 'px,' + y1 + 'px) scale(1.3,' + sy.toFixed(2) + ') rotate(0deg)', opacity: 1 }
-        ], { duration: 1050, easing: 'cubic-bezier(.45,0,.2,1)', fill: 'forwards' });
-        await anim.finished;
-        fly.remove();
-      }
-      await setU(0, 1, 750);
-      busy = false;
+      if (live) live.textContent = b.getAttribute('data-title') + '. ' + b.getAttribute('data-text');
+      open = i;
     }
-
-    // clicking the open bottle again: the note rolls up, flies back into the neck and the cork goes back on
-    async function putBack() {
-      if (busy || open < 0) return;
-      busy = true;
-      var b = btns[open];
-      var nr = note.getBoundingClientRect(), sv = b.querySelector('svg').getBoundingClientRect();
-      var x1 = nr.left + nr.width / 2, y1 = nr.top + nr.height / 2;
-      var x0 = sv.left + sv.width / 2, y0 = sv.top + sv.height * .16;
-      await setU(1, 0, 520);
-      note.hidden = true;
-      if (!REDUCED) {
-        var fly = document.createElement('div');
-        fly.className = 'fly-scroll';
-        document.body.appendChild(fly);
-        var anim = fly.animate([
-          { transform: 'translate(' + x1 + 'px,' + y1 + 'px) scale(1.2) rotate(0deg)', opacity: 1 },
-          { transform: 'translate(' + ((x0 + x1) / 2) + 'px,' + (Math.min(y0, y1) - 60) + 'px) scale(1.1) rotate(-10deg)', offset: .45 },
-          { transform: 'translate(' + x0 + 'px,' + (y0 - 34) + 'px) scale(.9) rotate(6deg)', opacity: 1, offset: .75 },
-          { transform: 'translate(' + x0 + 'px,' + (y0 + 26) + 'px) scale(.45) rotate(0deg)', opacity: 0 }
-        ], { duration: 950, easing: 'cubic-bezier(.45,0,.2,1)', fill: 'forwards' });
-        await anim.finished;
-        fly.remove();
-      }
-      b.classList.remove('emptied');
-      await wait(300);
-      b.classList.remove('uncorked');
-      await wait(380);
-      b.classList.remove('open');
-      b.setAttribute('aria-pressed', 'false');
-      stage.style.minHeight = '';
+    function lower() {
+      if (open < 0) return;
+      buoys[open].classList.remove('up'); buoys[open].setAttribute('aria-pressed', 'false');
+      field.classList.remove('has-up');
+      flag.classList.remove('on'); flag.setAttribute('aria-hidden', 'true');
       if (hint) hint.style.opacity = '';
       open = -1;
-      busy = false;
     }
+    function maybeLower() { if (open > -1 && hoverI !== open && !overFlag) lower(); }
 
-    // hovering a bottle (mouse users) opens it, same as a click; a short pause stops a quick sweep across the row from opening every bottle
-    var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    var hoverI = -1, hoverT = 0;
-    // moving the mouse off the open bottle puts its message back (it stays out while the pointer is on the note itself)
-    var overNote = false, closeT = 0;
-    function tryClose() {
-      if (open < 0 || hoverI === open || overNote) return;
-      if (busy) { closeT = setTimeout(tryClose, 150); return; }
-      putBack();
-    }
-    if (canHover) {
-      note.addEventListener('mouseenter', function () { overNote = true; clearTimeout(closeT); });
-      note.addEventListener('mouseleave', function () { overNote = false; clearTimeout(closeT); closeT = setTimeout(tryClose, 400); });
-    }
-    function tryHover() { if (hoverI < 0 || hoverI === open) return; if (busy) { hoverT = setTimeout(tryHover, 150); return; } pull(hoverI); }
-
-    btns.forEach(function (b, i) {
-      b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', function () { clearTimeout(hoverT); if (i === open) putBack(); else pull(i); });
+    buoys.forEach(function (b, i) {
+      b.addEventListener('click', function () { clearTimeout(openT); if (i === open) lower(); else raise(i); });
+      b.addEventListener('focus', function () { if (b.matches(':focus-visible')) raise(i); });
       if (canHover) {
-        b.addEventListener('mouseenter', function () { hoverI = i; clearTimeout(hoverT); hoverT = setTimeout(tryHover, 160); });
-        b.addEventListener('mouseleave', function () { if (hoverI === i) hoverI = -1; clearTimeout(hoverT); clearTimeout(closeT); closeT = setTimeout(tryClose, 400); });
+        b.addEventListener('mouseenter', function () { hoverI = i; clearTimeout(openT); clearTimeout(closeT); openT = setTimeout(function () { if (hoverI === i) raise(i); }, 140); });
+        b.addEventListener('mouseleave', function () { if (hoverI === i) hoverI = -1; clearTimeout(openT); clearTimeout(closeT); closeT = setTimeout(maybeLower, 350); });
       }
     });
+    if (canHover) {
+      flag.addEventListener('mouseenter', function () { overFlag = true; clearTimeout(closeT); });
+      flag.addEventListener('mouseleave', function () { overFlag = false; clearTimeout(closeT); closeT = setTimeout(maybeLower, 350); });
+    }
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lower(); });
+    window.addEventListener('resize', function () { if (open > -1) place(open); });
   }
 
   /* ---------------------------------------------------------- 02 route: a tide line drawn by your scroll */
@@ -386,7 +335,7 @@
       down = false;
       var c = cards[top]; c.classList.remove('dragging');
       if (!moved) { flip(); return; }
-      if (Math.abs(dx) > 90) go(top + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); else layout();
+      if (Math.abs(dx) > 90) go(top + 1, dx < 0 ? 1 : -1); else layout(); // either direction deals the next card; it flies off the way it was swiped
     });
     deck.setAttribute('tabindex', '0');
     deck.addEventListener('keydown', function (e) {
@@ -694,7 +643,7 @@
   var SCENES = {
     lagoon: '<span class="mesh m1"></span><span class="mesh m2"></span><span class="mesh m3"></span><span class="mesh m4"></span><span class="spot"></span><span class="grain"></span>',
     chart: '<canvas data-bg="contours"></canvas><span class="coords">20°17′S · 57°33′E · MAURITIUS</span><span class="grain"></span>',
-    shore: '<span class="leak l1"></span><span class="leak l2"></span><div class="leaves"><span class="leaf f1"></span><span class="leaf f2"></span><span class="leaf f3"></span></div><span class="grain"></span>',
+    shore: '<span class="leak l1"></span><span class="leak l2"></span><div class="leaves"><span class="glow g1"></span><span class="glow g2"></span><span class="glow g3"></span><span class="glow g4"></span><span class="ribbon"></span></div><span class="grain"></span>',
     reef: '<div class="rays"></div><canvas data-bg="bubbles"></canvas>',
     dunes: '<div class="halo"></div>' +
       '<div class="dune d1"><svg viewBox="0 0 1440 300" preserveAspectRatio="none"><path d="M0 120 C200 40 420 30 640 110 S1100 200 1440 80 V300 H0Z" fill="#f2c6b4"/></svg></div>' +
@@ -892,7 +841,7 @@
   function initDots() {
     var secs = $$('section[data-label]');
     if (secs.length < 3) return;
-    if (document.body.classList.contains('home')) return initCompass(secs);
+    if (document.body.classList.contains('home') || $('section.hero')) return initCompass(secs);
     var nav = document.createElement('nav');
     nav.className = 'dots'; nav.setAttribute('aria-label', 'Sections');
     secs.forEach(function (s, i) {
